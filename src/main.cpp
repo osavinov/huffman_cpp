@@ -510,11 +510,9 @@ int main(int argc, char *argv[])
         switch(opt)
         {
             case 'f':
-                printf("filename: %s\n", optarg);
                 strcpy(filename, optarg);
                 break;
             case 'o':
-                printf("output file: %s\n", optarg);
                 strcpy(archFile, optarg);
                 break;
             case 'c':

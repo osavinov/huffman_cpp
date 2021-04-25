@@ -1,13 +1,14 @@
 import subprocess
+import os
 
 
 def remove_file(filename: str):
     assert subprocess.call(['rm', filename]) == 0
 
 
-def generate_file():
+def generate_file(filesize: int):
     file = open('_test', 'wb+')
-    file.write(b'aaabbbcccddd\n')
+    file.write(os.urandom(filesize))
     file.close()
 
 
