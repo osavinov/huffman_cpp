@@ -1,0 +1,4 @@
+.pytest_cache
+*.o
+huffman
+.idea
