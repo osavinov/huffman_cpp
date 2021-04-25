@@ -3,3 +3,4 @@
 huffman
 .idea
 tests/__pycache__
+cmake-build-debug

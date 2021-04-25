@@ -1,9 +1,11 @@
 import subprocess
 import os
 
+import typing
+
 
 def remove_file(filename: str):
-    assert subprocess.call(['rm', filename]) == 0
+    run_command(['rm', filename])
 
 
 def generate_file(filesize: int):
@@ -22,6 +24,10 @@ def decompress(filename: str):
     assert subprocess.call(
         ['./huffman', '-d', '-f', filename, '-o', 'test.huf'],
     ) == 0
+
+
+def run_command(args: typing.List[str]):
+    assert subprocess.call(args) == 0
 
 
 def get_content(filename: str):
