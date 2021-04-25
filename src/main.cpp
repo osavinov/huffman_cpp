@@ -9,70 +9,70 @@
 HuffmanTree huffman_tree;
 
 void compress(char *inputFile, char *outputFile) {
-    ReadBuffer inp(inputFile);
-    inp.readFile();
+    ReadBuffer input(inputFile);
+    input.readFile();
 
     WritePackBuffer out(outputFile);
-    if (!inp.FILE_SIZE)
+    if (!input.FILE_SIZE)
         return;
     unsigned char k;
     int count = 1;
-    while (inp.readChar(&k)) {
+    while (input.readChar(&k)) {
         if (huffman_tree.numOfNode(k) == 0) {
-            Code curESC = huffman_tree.getCode(huffman_tree.getESCindex());
-            out.write(curESC.code, curESC.lengthCode);
+            Code cur_esc = huffman_tree.getCode(huffman_tree.getESCindex());
+            out.write(cur_esc.code, cur_esc.length_code);
             out.writeChar(k);
             huffman_tree.addElem(k);
         } else {
             Code curCode = huffman_tree.getCode(huffman_tree.numOfNode(k));
-            out.write(curCode.code, curCode.lengthCode);
+            out.write(curCode.code, curCode.length_code);
         }
         huffman_tree.updateTree(k);
         count++;
     }
     Code curEOF = huffman_tree.getCode(huffman_tree.getEOFindex());
-    out.write(curEOF.code, curEOF.lengthCode);
+    out.write(curEOF.code, curEOF.length_code);
     out.writeFile();
-    inp.closeFile();
+    input.closeFile();
     out.closeFile();
     huffman_tree.eraseTree();
 }
 
 void decompress(char *inputFile, char *outputFile) {
-    ReadPackBuffer inp(inputFile);
-    WriteBuffer out(outputFile);
-    inp.readFile();
-    if (!inp.FILE_SIZE)
+    ReadPackBuffer input(inputFile);
+    WriteBuffer output(outputFile);
+    input.readFile();
+    if (!input.FILE_SIZE)
         return;
-    bool cur;
+    bool current;
     unsigned int pos = 1;
-    unsigned char curChar;
-    while (inp.readBit(&cur)) {
-        if (cur)
-            pos = huffman_tree.tree[pos].rightSon;
+    unsigned char current_char;
+    while (input.readBit(&current)) {
+        if (current)
+            pos = huffman_tree.tree[pos].right_son;
         else
-            pos = huffman_tree.tree[pos].leftSon;
+            pos = huffman_tree.tree[pos].left_son;
 
-        if (huffman_tree.tree[pos].isLeaf) {
+        if (huffman_tree.tree[pos].is_leaf) {
             if (pos == huffman_tree.getESCindex()) {
-                inp.read(&curChar, 8);
-                huffman_tree.addElem(curChar);
-                huffman_tree.updateTree(curChar);
+                input.read(&current_char, 8);
+                huffman_tree.addElem(current_char);
+                huffman_tree.updateTree(current_char);
                 pos = 1;
             } else if (pos == huffman_tree.getEOFindex()) {
                 break;
             } else {
-                curChar = huffman_tree.tree[pos].sym;
-                huffman_tree.updateTree(curChar);
+                current_char = huffman_tree.tree[pos].sym;
+                huffman_tree.updateTree(current_char);
                 pos = 1;
             }
-            out.writeChar(curChar);
+            output.writeChar(current_char);
         }
     }
 
-    out.writeFile();
-    inp.closeFile();
-    out.closeFile();
+    output.writeFile();
+    input.closeFile();
+    output.closeFile();
     huffman_tree.eraseTree();
 }
 

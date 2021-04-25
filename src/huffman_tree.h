@@ -7,7 +7,7 @@
 
 struct Code {
     bool code[SIZE_CODE];
-    int lengthCode;
+    int length_code;
     Code();
 };
 
@@ -15,18 +15,18 @@ class Node {
 public:
     unsigned char sym;
     int weight;
-    int leftSon;
-    int rightSon;
+    int left_son;
+    int right_son;
     unsigned int parent;
-    bool isLeaf;
+    bool is_leaf;
     void setNode(unsigned char s, int w, int ls, int rs, int p, bool l);
 };
 
 class HuffmanTree {
 private:
-    unsigned int indexESC;
-    unsigned int indexEOF;
-    unsigned int sizeTree;
+    unsigned int index_esc;
+    unsigned int index_eof;
+    unsigned int size_tree;
 public:
     Node tree[SIZE_TREE];
     HuffmanTree();

@@ -9,16 +9,16 @@ WritePackBuffer::WritePackBuffer(char *fileName) {
         exit(1);
     }
     pos = 0;
-    bitPos = 0;
+    bit_pos = 0;
     for (unsigned char & i : buffer)
         i = 0;
 }
 
 void WritePackBuffer::writeFile() {
-    fwrite(buffer, sizeof(char), bitPos ? pos + 1 : pos, file);
+    fwrite(buffer, sizeof(char), bit_pos ? pos + 1 : pos, file);
 
     pos = 0;
-    bitPos = 0;
+    bit_pos = 0;
     for (unsigned char & i : buffer)
         i = 0;
 }
@@ -26,10 +26,10 @@ void WritePackBuffer::writeFile() {
 void WritePackBuffer::write(bool *n, int blockSize) {
     for (int i = blockSize - 1; i >= 0; i--) {
         if (n[i])
-            buffer[pos] = set_bit(buffer[pos], sizeof(char) * 8 - bitPos - 1);
-        bitPos++;
-        if (bitPos == 8) {
-            bitPos = 0;
+            buffer[pos] = set_bit(buffer[pos], sizeof(char) * 8 - bit_pos - 1);
+        bit_pos++;
+        if (bit_pos == 8) {
+            bit_pos = 0;
             pos++;
             if (pos == BUFFER_SIZE)
                 writeFile();
@@ -41,11 +41,11 @@ void WritePackBuffer::writeChar(unsigned char c) {
     unsigned char mask = 1 << 7;
     for (int i = 0; i < 8; i++) {
         if (c & mask)
-            buffer[pos] = set_bit(buffer[pos], sizeof(char) * 8 - bitPos - 1);
+            buffer[pos] = set_bit(buffer[pos], sizeof(char) * 8 - bit_pos - 1);
         mask = mask >> 1;
-        bitPos++;
-        if (bitPos == 8) {
-            bitPos = 0;
+        bit_pos++;
+        if (bit_pos == 8) {
+            bit_pos = 0;
             pos++;
             if (pos == BUFFER_SIZE)
                 writeFile();

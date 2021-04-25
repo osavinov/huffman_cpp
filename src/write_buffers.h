@@ -6,11 +6,12 @@
 
 #endif //HUFFMAN_CPP_WRITE_BUFFERS_H
 
+
 class WritePackBuffer {
 private:
     unsigned char buffer[BUFFER_SIZE];
     int pos;
-    int bitPos;
+    int bit_pos;
     FILE *file;
 public:
     explicit WritePackBuffer(char *fileName);

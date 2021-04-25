@@ -56,7 +56,7 @@ ReadPackBuffer::ReadPackBuffer(char *fileName) {
     }
 
     pos = 0;
-    bitPos = 0;
+    bit_pos = 0;
     size = 0;
     for (unsigned char & i : buffer)
         i = 0;
@@ -67,14 +67,14 @@ ReadPackBuffer::ReadPackBuffer(char *fileName) {
 
 bool ReadPackBuffer::readBit(bool *bit) {
     *bit = false;
-    if (((size - pos) * 8 - bitPos) == 0 && lastBuf)
+    if (((size - pos) * 8 - bit_pos) == 0 && lastBuf)
         return false;
-    unsigned char mask = 1 << (7 - bitPos);
+    unsigned char mask = 1 << (7 - bit_pos);
     if (buffer[pos] & mask)
         *bit = true;
-    bitPos++;
-    if (bitPos == 8) {
-        bitPos = 0;
+    bit_pos++;
+    if (bit_pos == 8) {
+        bit_pos = 0;
         pos++;
         //mask = 1 << 7;
         if (pos == size)
@@ -85,18 +85,18 @@ bool ReadPackBuffer::readBit(bool *bit) {
 
 bool ReadPackBuffer::read(unsigned char *n, int blockSize) {
     *n = 0;
-    if ((((size - pos) * 8 - bitPos) < blockSize) && lastBuf)
+    if ((((size - pos) * 8 - bit_pos) < blockSize) && lastBuf)
         return false;
     else {
-        unsigned char mask = 1 << (7 - bitPos);
+        unsigned char mask = 1 << (7 - bit_pos);
         for (int i = 0; i < blockSize; i++) {
             if (buffer[pos] & mask)
                 *n = set_bit(*n, blockSize - i - 1);
 
             mask = mask >> 1;
-            bitPos++;
-            if (bitPos == 8) {
-                bitPos = 0;
+            bit_pos++;
+            if (bit_pos == 8) {
+                bit_pos = 0;
                 pos++;
                 mask = 1 << 7;
                 if (pos == size)
