@@ -54,18 +54,16 @@ void decompress(char *inputFile, char *outputFile) {
             pos = huffman_tree.tree[pos].left_son;
 
         if (huffman_tree.tree[pos].is_leaf) {
+            if (pos == huffman_tree.getEOFindex())
+                break;
             if (pos == huffman_tree.getESCindex()) {
                 input.read(&current_char, 8);
                 huffman_tree.addElem(current_char);
-                huffman_tree.updateTree(current_char);
-                pos = 1;
-            } else if (pos == huffman_tree.getEOFindex()) {
-                break;
             } else {
                 current_char = huffman_tree.tree[pos].sym;
-                huffman_tree.updateTree(current_char);
-                pos = 1;
             }
+            huffman_tree.updateTree(current_char);
+            pos = 1;
             output.writeChar(current_char);
         }
     }

@@ -23,9 +23,9 @@ public:
 class ReadPackBuffer {
 private:
     unsigned char buffer[BUFFER_SIZE];
-    int pos;
-    int bit_pos;
-    int size;
+    unsigned int pos;
+    unsigned int bit_pos;
+    unsigned int size;
     FILE *file;
 public:
     unsigned int FILE_SIZE;

@@ -4,8 +4,7 @@ from utils import generate_file, remove_file
 
 
 @pytest.fixture(scope='function')
-def handle_env(request):
-    generate_file(request.param)
+def teardown_env():
     yield
     remove_file('_test')
     remove_file('_test_decomp')

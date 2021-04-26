@@ -10,8 +10,8 @@
 class WritePackBuffer {
 private:
     unsigned char buffer[BUFFER_SIZE];
-    int pos;
-    int bit_pos;
+    unsigned int pos;
+    unsigned int bit_pos;
     FILE *file;
 public:
     explicit WritePackBuffer(char *fileName);

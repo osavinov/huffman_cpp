@@ -5,12 +5,20 @@ import typing
 
 
 def remove_file(filename: str):
-    run_command(['rm', filename])
+    run_command(['rm', '-f', filename, '||', 'true'])
 
 
-def generate_file(filesize: int):
-    file = open('_test', 'wb+')
-    file.write(os.urandom(filesize))
+def generate_file(
+        filesize: int = None,
+        random: bool = True,
+        content: bytes = None,
+        filename: str = '_test',
+):
+    file = open(filename, 'wb+')
+    if random:
+        file.write(os.urandom(filesize))
+    else:
+        file.write(content)
     file.close()
 
 
